@@ -1,0 +1,21 @@
+{
+  "name": "cs-546-group-3-project",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/rayruzzo/CS-546-Group-3-Project#readme",
+  "bugs": {
+    "url": "https://github.com/rayruzzo/CS-546-Group-3-Project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rayruzzo/CS-546-Group-3-Project.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  }
+}
