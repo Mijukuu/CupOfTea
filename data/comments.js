@@ -2,19 +2,23 @@ import { ObjectId } from "mongodb";
 import db from "../config/mongoCollections.js"
 import validators from "../validation.js"
 
-const _validateComment = (postId,authorId,content) =>{
+const _validateComment = (postId, authorId, content) => {
     postId = validators.validateId(postId, "Post ID");
-    autherId = validators.validateId(authorId,"Author ID");
-    content = validators.validateString(content,"Comment content");
-    return {postId,autherId,content};
+    authorId = validators.validateId(authorId, "Author ID");
+    content = validators.validateString(content, "Comment content");
+    return { postId, authorId, content };
 }
 
 //Create comment
 const createComment = async (postId,authorId,content) =>{
     const validated = _validateComment(postId,authorId,content);
+    const post = await postCollection.findOne({ _id: new ObjectId(validated.postId) });
+    if (!post) {
+        throw `Cannot create comment: post with ID ${validated.postId} does not exist.`;
+    }
     const newComment = {
         postId:validated.postId,
-        authorId:validated.autherId,
+        authorId:validated.authorId,
         content: validated.content,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -27,27 +31,27 @@ const createComment = async (postId,authorId,content) =>{
     const newId = insertInfo.insertedId.toString();
     const postCollection = await db.posts();
     const updatePost = await postCollection.updateOne(
-        {_id:new ObjectId(post)},
+        {_id:new ObjectId(postId)},
         {$push : {comments: newId}}
     );
     if(updatePost.modifiedCount === 0){
         throw "Failed to attach comment to post";
     }
 
-  return getCommentById(newId);
+  return await getCommentById(newId);
 }
 
 
 const getCommentById = async (id)=>{
     id = validators.validateId(id,"Comment ID");
     const commentsCollection = await db.comments();
-    const comment = commentsCollection.findOne({_id:new ObjectId(id)});
+    const comment = await commentsCollection.findOne({_id:new ObjectId(id)});
     if(!comment) throw "Comment not found!";
     return comment;
 }
 
 const getCommentsByPostId = async (postId)=>{
-    postId = validators.validateId(id,"Post ID");
+    postId = validators.validateId(postId,"Post ID");
 
     const commentsCollection = await db.comments();
     const comments = await commentsCollection.find({postId}).toArray();
@@ -78,18 +82,18 @@ const removeComment = async (id)=>{
 
 const updateComment = async (id,content)=>{
     id = validators.validateId(id,"Comment ID");
-    comment = validators.validateString(content,"Upadated comment content");
+    comment = validators.validateString(content,"Updated comment content");
 
     const commentsCollection = await db.comments();
     const updated ={content,updatedAt:new Date()};
 
-    const updadateInfo = await commentsCollection.updateOne({_id: new ObjectId(id)},{$set:updated});
+    const updatedInfo = await commentsCollection.updateOne({_id: new ObjectId(id)},{$set:updated});
 
 
-    if(updadateInfo.modifiedCount === 0){
+    if(updatedInfo.modifiedCount === 0){
         throw `Unable to update comment!`;
     }
-    return getCommentById(id);
+    return await getCommentById(id);
 }
 
 const commentFunctions={
