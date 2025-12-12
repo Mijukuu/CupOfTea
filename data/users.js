@@ -9,9 +9,9 @@ const { users } = db;
  */
 const User = Object.freeze(class User {
 
-   /** 
+   /**
     * prevent arbitrary access role modification by freezing this.
-    */ 
+    */
    static roles = Object.freeze({
       USER: "user",
       MODERATOR: "moderator",
@@ -31,12 +31,12 @@ const User = Object.freeze(class User {
    static avatarMaxOriginalSizeMB  = 30;
    static avatarMaxResizedSizeMB   = 0.3;
    static avatarAllowedMIMETypes   = new Map([
-      ["image/apng",    "PNG"], 
-      ["image/avif",    "AVIF"], 
-      ["image/gif",     "GIF"], 
-      ["image/jpeg",    "JPG"], 
-      ["image/png",     "PNG"], 
-      ["image/svg+xml", "SVG"], 
+      ["image/apng",    "PNG"],
+      ["image/avif",    "AVIF"],
+      ["image/gif",     "GIF"],
+      ["image/jpeg",    "JPG"],
+      ["image/png",     "PNG"],
+      ["image/svg+xml", "SVG"],
       ["image/webp",    "WEBP"]
    ]);
    static #avatarAllowedTypesStr         = ""; // created at runtime
@@ -60,9 +60,9 @@ const User = Object.freeze(class User {
    constructor({email, password, role, zipcode, profile, settings}) {
       this.email      = email,
       this.password   = password,
-      this.role       = role,     
+      this.role       = role,
       this.zipcode    = zipcode,
-      this.profile    = profile,              
+      this.profile    = profile,
       this.settings   = settings
 
       User.#incrementTotalUserCount();
@@ -70,7 +70,7 @@ const User = Object.freeze(class User {
 
    /**
     * Hashes a value and automatically calculates the optimal salt rounds if necessary.
-    * 
+    *
     * @param {string} value      - The value to hash (ex. password)
     * @returns {Promise<string>}   A promise to resolve with the encrypted data or reject with an `Error`
     */
@@ -189,12 +189,12 @@ const User = Object.freeze(class User {
    /**
     * Calculates optimal salt rounds which scales to computing power.
     * Modified from: https://stackoverflow.com/a/61304956
-    * 
+    *
     * @returns {Promise<void>}
     */
    static async calculateOptimalSaltRounds() {
 
-      // setting an initial low value so we can calculate 
+      // setting an initial low value so we can calculate
       // a benchmark faster which we then can scale easily
       const STARTING_SALT_DO_NOT_USE = 11;
 
@@ -226,7 +226,7 @@ const User = Object.freeze(class User {
       }
 
       console.log("OPTIMAL SALT ROUNDS SET TO:", optimalSaltRounds);
-      
+
       User.#setOptimalSaltRounds(optimalSaltRounds);
       return;
    }
@@ -251,8 +251,8 @@ const User = Object.freeze(class User {
       const userCol = await users();
 
       const usernameInsensitiveIndex = await userCol.createIndex(
-         { "profile.username": 1 }, 
-         { 
+         { "profile.username": 1 },
+         {
             collation: { locale: "en", strength: 2 },
             name: "caseInsensitiveUsername"
          }
@@ -263,13 +263,13 @@ const User = Object.freeze(class User {
       // TODO: this is an absolute last resort (should probably remove these `unique` as they run at CRUD-time)
       // https://www.mongodb.com/docs/drivers/node/current/indexes/#unique-indexes
       const uniqueEmailIndex = await userCol.createIndex(
-         { "email": 1 }, 
+         { "email": 1 },
          { unique: true, name: "uniqueEmail" }
       )
       console.log("Index created:", uniqueEmailIndex);
 
       const uniqueUsernameIndex = await userCol.createIndex(
-         { "profile.username": 1 }, 
+         { "profile.username": 1 },
          { unique: true, name: "uniqueUsername"}
       )
       console.log("Index created:", uniqueUsernameIndex);
@@ -286,7 +286,7 @@ const User = Object.freeze(class User {
 
 /**
  * Public functions that deal with User-related operations
- */ 
+ */
 const userFunctions = Object.freeze({
 
    /**
@@ -313,10 +313,10 @@ const userFunctions = Object.freeze({
    // TODO: finish this
    /**
     * Creates a new `User` in MongoDB.
-    * 
+    *
     * **WARNING**: For use with 100% validated data.
-    * 
-    * @param {Object} validUserData - 100% valid User data to create a new account with 
+    *
+    * @param {Object} validUserData - 100% valid User data to create a new account with
     * @returns {Promise<Object>}      an object with the User data and a success message
     */
    async createUser(validUserData) {
@@ -326,10 +326,10 @@ const userFunctions = Object.freeze({
 
       let {
          email,
-         password, 
-         role, 
+         password,
+         role,
          zipcode,
-         profile, 
+         profile,
          settings
       } = validUserData;
 
@@ -341,10 +341,10 @@ const userFunctions = Object.freeze({
       // the local constructor should only be used once everything is validated
       const newUser = new User({
          email,
-         password, 
-         role, 
-         zipcode, 
-         profile, 
+         password,
+         role,
+         zipcode,
+         profile,
          settings
       });
 
@@ -369,9 +369,9 @@ const userFunctions = Object.freeze({
 
    /**
     * Retrieves a `User` by `_id` in MongoDB.
-    * 
+    *
     * **WARNING**: For use with 100% validated data.
-    * 
+    *
     * @param {ObjectId} userId - 100% valid `ObjectId` to search a User by
     * @returns {Promise<Object>} an object with the User data and a success message
     */
@@ -393,9 +393,9 @@ const userFunctions = Object.freeze({
 
    /**
     * Retrieves a `User` by `username` in MongoDB.
-    * 
+    *
     * **WARNING**: For use with 100% validated data.
-    * 
+    *
     * @param {string} username - 100% valid username to search a User by
     * @returns {Promise<Object>} an object with the User data and a success message
     */
@@ -418,16 +418,16 @@ const userFunctions = Object.freeze({
    // TODO: check if we have the necessary permission to update a user :D !!
    /**
     * Updates a `User` by `_id` in MongoDB.
-    * 
+    *
     * **WARNING**: For use with 100% validated data.
-    * 
+    *
     * @param {ObjectId} userId        - 100% valid `ObjectId` to search a User by
     * @param {Object}   validUserData - 100% valid User data to update an account with
     * @returns {Promise<Object>}        an object with the User data and a success message
     */
    async updateUser(userId, validUserData) {
 
-      if (!userId) 
+      if (!userId)
          throw new Error("Please provide a validated `User` id", {cause: userId});
       if (!validUserData || Object(validUserData) !== validUserData)
          throw new Error("Please provide a validated `User` data object", {cause: validUserData});
@@ -435,7 +435,7 @@ const userFunctions = Object.freeze({
       const userCollection = await users();
 
       const { user } = await this.getUserById(userId);
-      
+
       // also re-hash password if it is different
       if (validUserData.password) {
 
@@ -470,7 +470,7 @@ const userFunctions = Object.freeze({
                   // update with new info
                   user[key][k] = validUserData[key][k];
 
-               } else if (nullableKeys[k]) {  
+               } else if (nullableKeys[k]) {
 
                   // if no data provided and key is allowed to be null, set to null
                   user[key][k] = null;
@@ -488,9 +488,9 @@ const userFunctions = Object.freeze({
       delete user._id;
 
       console.log("UPDATED:\n", user);
-      
+
       const updateInfo = await userCollection.updateOne(
-         { _id: ObjectId.createFromHexString(userId) }, 
+         { _id: ObjectId.createFromHexString(userId) },
          { $set: { ...user }}
       );
 
@@ -509,9 +509,9 @@ const userFunctions = Object.freeze({
    // TODO: check if we have the necessary permission to delete a user :D !!
    /**
     * Deletes a `User` by `_id` in MongoDB.
-    * 
+    *
     * **WARNING**: For use with 100% validated data.
-    * 
+    *
     * @param {ObjectId} userId - 100% valid ObjectId to delete a User by
     * @returns {Promise<Object>} an object with the deleted User id and a success message
     */

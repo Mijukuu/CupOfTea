@@ -31,7 +31,7 @@ router.post('/create', async (req, res) => {
     try {
         const { title, content, type, category, commentsEnabled, tags, priority, expiresAt } = req.body;
         const userId = req.session.user._id;
-        
+
         const { post } = await postData.createPost(title, userId, content, type, category, commentsEnabled, tags, priority, expiresAt);
         res.redirect(`/posts/${post._id}`);
     } catch (error) {
@@ -64,7 +64,7 @@ router.post('/edit/:id', postMiddleware.isPostOwnerAction, async (req, res) => {
         } = req.body;
         
         const post = req.post;
-        
+
         const editedPostData = {
             title,
             userId: post.userId,
@@ -101,7 +101,7 @@ router.get('/:id', postMiddleware.isPostOwnerDisplay, async (req, res) => {
 router.post('/delete/:id', postMiddleware.isPostOwnerAction, async (req, res) => {
     try {
         await postData.deletePost(req.params.id);
-        return res.status(200).json({ success: true, message: 'Post deleted' });  
+        return res.status(200).json({ success: true, message: 'Post deleted' });
     } catch (error) {
         renderErrorPage(res, 404, error.toString());
     }

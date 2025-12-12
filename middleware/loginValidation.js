@@ -53,6 +53,6 @@ export const validateLogin = async (req, res, next) => {
         role: user.role,
         username: user.profile?.username || ""
     };
-    
+
     next();
 };
