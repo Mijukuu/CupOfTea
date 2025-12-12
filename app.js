@@ -25,19 +25,6 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
-// TODO: Remove this mock middleware once you have proper authentication
-// This is only for testing purposes - in production, users must login
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    req.session.user = { 
-      _id: "6931f64c7c05d6abb9507104", // testing kamala's login
-      zipcode: "07030",
-      email: "kamala.khan@gmail.com",
-      username: "msmarvel-jc"
-    }; 
-  }
-  next();
-});
 
 // setup middleware
 app.use('/public', express.static('public'));
