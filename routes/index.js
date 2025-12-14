@@ -9,6 +9,7 @@ import {default as commentRouter} from './comments.js';
 import { default as dmthreadsRouter } from './dmthreads.js';
 import { renderErrorPage } from '../utils/errorUtils.js';
 import {default as moderatorRouter} from './moderator.js'
+import {default as checkRouter} from './check.js';
 
 const configRoutes = (app) => {
     app.use('/', homeRouter);
@@ -21,6 +22,7 @@ const configRoutes = (app) => {
     app.use('/signup',signupRoutes);
     app.use('/logout', logoutRoutes);
     app.use('/moderator', moderatorRouter);
+    app.use('/check', checkRouter);
 
     app.use((req, res) => {
         return renderErrorPage(res, 404, null);
