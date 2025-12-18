@@ -6,7 +6,12 @@ A community-driven platform connecting neighbors to share resources, offer help,
 Cup of Sugar enables users to connect with people in their local community to offer or request help across various categories including childcare, pet care, household tasks, financial assistance, food, and goods. Think of it as an elevated "Buy Nothing" group that builds community connections while helping neighbors meet their needs.
 Made as a group final project for CS-546
 
+**My Contributions**
 
+Designed and implemented Direct Messaging system (schemas, routes, UI)
+Built Moderator/Admin panel (ban/unban, reporting workflow)
+Middleware validation and access control
+Integrated features into shared codebase under active collaboration
 
 ## Running the Application
 
