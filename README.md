@@ -41,11 +41,12 @@ The project focuses on building a scalable backend, structured data models, and 
 This project was developed as part of a team collaboration.
 
 My primary contributions included:
-- Designing and implementing backend APIs using Express.js
-- Structuring MongoDB schemas for users, posts, and interactions
-- Building core application logic for post creation, filtering, and routing
-- Implementing authentication and session handling
-- Integrating major application components into a cohesive system
+- Designed and implemented backend APIs using Express.js
+- Structured MongoDB schemas for users, posts, messaging, and moderation workflows
+- Built the full direct messaging system (interface and backend logic)
+- Developed moderation features, including admin/moderator functionality and controls
+- Contributed to post creation and filtering features
+- Led integration across application components to ensure a cohesive and functional system
 
 ---
 
