@@ -20,10 +20,13 @@ The project focuses on building a scalable backend, structured data models, and 
 
 - User authentication and session management
 - Create, browse, and filter community posts
+- Direct messaging system between users
+- Moderation tools for admin and moderator roles
 - Category-based organization (food, goods, childcare, etc.)
 - Role-based access (admin, moderator, user)
 - Persistent storage using MongoDB
 - Seeded test accounts for quick testing
+  
 
 ---
 
