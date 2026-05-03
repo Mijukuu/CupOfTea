@@ -46,7 +46,7 @@ My primary contributions included:
 - Built the full direct messaging system (interface and backend logic)
 - Developed moderation features, including admin/moderator functionality and controls
 - Contributed to post creation and filtering features
-- Led integration across application components to ensure a cohesive and functional system
+- Led integration across core application components, ensuring end-to-end functionality across features
 
 ---
 
